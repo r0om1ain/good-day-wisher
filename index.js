@@ -14,8 +14,6 @@ import { motivationMessages } from './content/motivation.js'
 import { democracyMessages } from './content/democracy.js'
 import { startHttpServer } from './server.js'
 
-import http from 'node:http'
-
 const server = http.createServer((req, res) => {
   res.writeHead(200)
   res.end('Bot running')
@@ -202,7 +200,7 @@ client.once('ready', () => {
   startHttpServer()
 
   const tz = process.env.TZ || 'Europe/Paris'
-  const dailyExpr = process.env.CRON || '0 9 * * *'
+  const dailyExpr = process.env.CRON || '0 7 * * *'
 
   cron.schedule(dailyExpr, () => { runDailyCycle().catch(() => {}) }, { timezone: tz })
   cron.schedule('0 7 * * *', () => { sendSundayMessage().catch(() => {}) }, { timezone: tz })
