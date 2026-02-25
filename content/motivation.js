@@ -1,0 +1,22 @@
+export const motivationMessages = [
+  "Fais-le. Personne ne viendra le faire pour toi.",
+  "Aujourd’hui compte. Agis en conséquence.",
+  "Ce que tu fais maintenant détermine la suite.",
+  "Le confort est séduisant. Le progrès est exigeant.",
+  "Un pas décisif vaut mieux qu’un plan parfait.",
+  "Ta discipline parle plus fort que tes intentions.",
+  "Agis avec la certitude que cela a du poids.",
+  "L’élan naît de l’action, jamais de l’attente.",
+  "Si c’est important, traite-le comme tel.",
+  "La constance bat l’intensité occasionnelle.",
+  "Négocie moins avec tes peurs.",
+  "L’exécution tranche le doute.",
+  "Tu avances ou tu stagnes. Choisis.",
+  "Ce que tu repousses te ralentit.",
+  "Rends cette heure utile.",
+  "Ta décision vaut plus que ton hésitation.",
+  "Construis aujourd’hui ce que tu voudras admirer demain.",
+  "La clarté suit l’engagement.",
+  "Agis avec sérieux.",
+  "Sois à la hauteur de ta propre exigence."
+]
