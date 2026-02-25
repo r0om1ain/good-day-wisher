@@ -12,6 +12,17 @@ import { dailyMessages } from './content/daily.js'
 import { sundayMessages } from './content/sunday.js'
 import { motivationMessages } from './content/motivation.js'
 import { democracyMessages } from './content/democracy.js'
+import { startHttpServer } from './server.js'
+
+import http from 'node:http'
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200)
+  res.end('Bot running')
+})
+
+const PORT = process.env.PORT || 3000
+server.listen(PORT)
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 
@@ -187,13 +198,14 @@ client.on(Events.InteractionCreate, async interaction => {
 })
 
 client.once('ready', () => {
+  console.log(`Logged in as ${client.user.tag}`)
+  startHttpServer()
+
   const tz = process.env.TZ || 'Europe/Paris'
-  const dailyExpr = process.env.CRON || '30 8 * * *'
+  const dailyExpr = process.env.CRON || '0 9 * * *'
 
-  sendDailyMessage()
-
-  cron.schedule(dailyExpr, () => { sendDailyMessage().catch(() => {}) }, { timezone: tz })
-  cron.schedule('0 7 * * 0', () => { sendSundayMessage().catch(() => {}) }, { timezone: tz })
+  cron.schedule(dailyExpr, () => { runDailyCycle().catch(() => {}) }, { timezone: tz })
+  cron.schedule('0 7 * * *', () => { sendSundayMessage().catch(() => {}) }, { timezone: tz })
 })
 
 client.login(process.env.DISCORD_TOKEN)
