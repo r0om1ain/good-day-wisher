@@ -14,13 +14,7 @@ import { motivationMessages } from './content/motivation.js'
 import { democracyMessages } from './content/democracy.js'
 import { startHttpServer } from './server.js'
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200)
-  res.end('Bot running')
-})
-
-const PORT = process.env.PORT || 3000
-server.listen(PORT)
+startHttpServer()
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 
@@ -75,6 +69,10 @@ function pickFromPool(pool, recentKey, maxRecent) {
   writeState({ ...state, [recentKey]: updatedRecent })
 
   return selected
+}
+
+async function runDailyCycle() {
+  await sendDailyMessage()
 }
 
 async function sendEmbed(channelId, text, color) {
@@ -197,13 +195,12 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}`)
-  startHttpServer()
 
   const tz = process.env.TZ || 'Europe/Paris'
   const dailyExpr = process.env.CRON || '0 7 * * *'
 
   cron.schedule(dailyExpr, () => { runDailyCycle().catch(() => {}) }, { timezone: tz })
-  cron.schedule('0 7 * * *', () => { sendSundayMessage().catch(() => {}) }, { timezone: tz })
+  cron.schedule('0 7 * * 0', () => { sendSundayMessage().catch(() => {}) }, { timezone: tz })
 })
 
 client.login(process.env.DISCORD_TOKEN)
